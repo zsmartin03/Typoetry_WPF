@@ -1,0 +1,24 @@
+﻿<Window x:Class="Typoetry_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Typoetry" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+            <Button Content="Normal" Name="btnPlayNormal" Click="BtnPlayNormal_Click" />
+            <Button Content="Casual" Name="btnPlayCasual" Click="BtnPlayCasual_Click" />
+            <Button Content="Choose Text" Name="btnChooseText" Click="BtnChooseText_Click" />
+            <Button Content="Add Text" Name="btnAddText" Click="BtnAddText_Click" />
+        </StackPanel>
+
+        <RichTextBox Name="rtbTypingText" Grid.Row="1" Margin="10" />
+        <TextBlock Name="lblOverview" Text="Overview" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" />
+    </Grid>
+</Window>

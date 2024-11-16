@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35431.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typoetry_WPF", "Typoetry_WPF\Typoetry_WPF.csproj", "{02FEE955-27AC-4F6D-B0D5-250978797FEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typoetry", "Typoetry\Typoetry.csproj", "{403AF60F-212C-44C5-BBCE-1279CEF2A74B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02FEE955-27AC-4F6D-B0D5-250978797FEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02FEE955-27AC-4F6D-B0D5-250978797FEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02FEE955-27AC-4F6D-B0D5-250978797FEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02FEE955-27AC-4F6D-B0D5-250978797FEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403AF60F-212C-44C5-BBCE-1279CEF2A74B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403AF60F-212C-44C5-BBCE-1279CEF2A74B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403AF60F-212C-44C5-BBCE-1279CEF2A74B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403AF60F-212C-44C5-BBCE-1279CEF2A74B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {206FE19A-A0F4-4C43-99CE-CB1BC70B1995}
+	EndGlobalSection
+EndGlobal
