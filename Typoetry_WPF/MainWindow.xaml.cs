@@ -1,69 +1,35 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Typoetry.Models;
-using Typoetry.Persistence;
+using System.Windows.Input;
+using Typoetry_WPF.ViewModels;
 
 namespace Typoetry_WPF
 {
     public partial class MainWindow : Window
     {
-        private DataHandler dh;
-        private TypingSession session;
+        private readonly MainViewModel _viewModel;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            dh = new DataHandler();
-            session = new TypingSession(dh);
+            // Initialize ViewModel with the RichTextBox from XAML
+            _viewModel = new MainViewModel(TypingTextBox);
 
-            // Attach event handlers
-            btnPlayNormal.Click += BtnPlayNormal_Click;
-            btnPlayCasual.Click += BtnPlayCasual_Click;
-            btnChooseText.Click += BtnChooseText_Click;
-            btnAddText.Click += BtnAddText_Click;
+            // Set DataContext for binding
+            DataContext = _viewModel;
 
-            rtbTypingText.PreviewKeyDown += KeyDownHandler;
-            rtbTypingText.TextChanged += KeyPressed;
-        }
+            // Disable copy/paste and drag/drop for the RichTextBox
+            TypingTextBox.PreviewKeyDown += (s, e) =>
+            {
+                if (e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+                {
+                    e.Handled = true;
+                }
+            };
 
-        private void BtnPlayNormal_Click(object sender, RoutedEventArgs e)
-        {
-            session.SetNormalGame();
-            StartTyping();
-        }
-
-        private void BtnPlayCasual_Click(object sender, RoutedEventArgs e)
-        {
-            session.SetCasualGame(50);
-            StartTyping();
-        }
-
-        private void BtnChooseText_Click(object sender, RoutedEventArgs e)
-        {
-            // Display entries for selection
-        }
-
-        private void BtnAddText_Click(object sender, RoutedEventArgs e)
-        {
-            var addEntryView = new AddEntryWindow(dh);
-            addEntryView.ShowDialog();
-        }
-
-        private void StartTyping()
-        {
-            rtbTypingText.IsEnabled = true;
-            rtbTypingText.Focus();
-        }
-
-        private void KeyDownHandler(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            // Handle key presses
-        }
-
-        private void KeyPressed(object sender, TextChangedEventArgs e)
-        {
-            // Handle typing logic
+            TypingTextBox.PreviewDragOver += (s, e) => e.Handled = true;
+            TypingTextBox.PreviewDrop += (s, e) => e.Handled = true;
         }
     }
 }
