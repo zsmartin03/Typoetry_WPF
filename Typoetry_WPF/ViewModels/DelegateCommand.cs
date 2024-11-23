@@ -18,7 +18,7 @@ namespace Typoetry_WPF.ViewModels
         }
 
         public DelegateCommand(Action<Object?> execute) : this(null, execute) { }
-
+            
         public DelegateCommand(Predicate<Object?>? canExecute, Action<Object?> execute)
         {
             if (execute == null)
@@ -39,5 +39,8 @@ namespace Typoetry_WPF.ViewModels
         {
             _execute(parameter);
         }
+
+        public void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
+
     }
 }

@@ -9,7 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\edit-icon.png" />
+    <None Remove="Views\play-icon.png" />
+    <None Remove="Views\trash-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Typoetry\Typoetry.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\edit-icon.png" />
+    <Resource Include="Views\play-icon.png" />
+    <Resource Include="Views\trash-icon.png" />
   </ItemGroup>
 
 </Project>

@@ -22,6 +22,8 @@ namespace Typoetry_WPF.ViewModels
         private string _countdownText = "";
         private string _sessionOverview = "";
         private string _leaderboardText = "";
+        private EntriesPanelViewModel _entriesPanelViewModel;
+        private Visibility _entriesPanelVisibility = Visibility.Collapsed;
         private Visibility _menuButtonsVisibility = Visibility.Visible;
         private Visibility _typingTextVisibility = Visibility.Collapsed;
         private Visibility _countdownVisibility = Visibility.Collapsed;
@@ -71,7 +73,25 @@ namespace Typoetry_WPF.ViewModels
                 OnPropertyChanged();
             }
         }
+        public EntriesPanelViewModel EntriesPanelViewModel
+        {
+            get => _entriesPanelViewModel;
+            set
+            {
+                _entriesPanelViewModel = value;
+                OnPropertyChanged();
+            }
+        }
 
+        public Visibility EntriesPanelVisibility
+        {
+            get => _entriesPanelVisibility;
+            set
+            {
+                _entriesPanelVisibility = value;
+                OnPropertyChanged();
+            }
+        }
         public Visibility MenuButtonsVisibility
         {
             get => _menuButtonsVisibility;
@@ -147,6 +167,30 @@ namespace Typoetry_WPF.ViewModels
             ShowLeaderboard();
         }
 
+        private void ExecuteChooseText(object? parameter)
+        {
+            LeaderboardVisibility = Visibility.Collapsed;
+            EntriesPanelVisibility = Visibility.Visible;
+            NormalButtonText = "BACK";
+            ChangeMenuVisibility(false);
+
+            if (EntriesPanelViewModel == null)
+            {
+                EntriesPanelViewModel = new EntriesPanelViewModel(_dataHandler, PlayChosenText);
+            }
+            else
+            {
+                EntriesPanelViewModel.LoadEntries();
+            }
+        }
+
+        private void PlayChosenText(Entry entry)
+        {
+            _session.SetChosenGame(entry);
+            EntriesPanelVisibility = Visibility.Collapsed;
+            StartTyping();
+        }
+
         private void ExecutePlayNormal(object? parameter)
         {
             LeaderboardVisibility = Visibility.Collapsed;
@@ -176,11 +220,6 @@ namespace Typoetry_WPF.ViewModels
             NormalButtonText = "BACK";
             ChangeMenuVisibility(false);
             StartTyping();
-        }
-
-        private void ExecuteChooseText(object? parameter)
-        {
-            // Implement text selection logic
         }
 
         private void StartTyping()
@@ -308,14 +347,11 @@ namespace Typoetry_WPF.ViewModels
 
         private void ChangeCharacterBackgroundColor(int position, SolidColorBrush color)
         {
-            // Retrieve the paragraph and the run containing the text
             var textRange = new TextRange(_typingTextBox.Document.ContentStart, _typingTextBox.Document.ContentEnd);
             string documentText = textRange.Text;
 
-            // Ensure position is within bounds
             if (position < 0 || position >= documentText.Length) return;
 
-            // Find the TextPointer corresponding to the current position
             TextPointer start = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position - 1);
             TextPointer end = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position);
 
@@ -326,7 +362,6 @@ namespace Typoetry_WPF.ViewModels
             }
         }
 
-        // Helper function to get the correct TextPointer
         private TextPointer GetTextPointerAtCharacterOffset(TextPointer start, int characterOffset)
         {
             int currentOffset = 0;
@@ -374,6 +409,7 @@ namespace Typoetry_WPF.ViewModels
             TypingTextVisibility = Visibility.Collapsed;
             OverviewVisibility = Visibility.Collapsed;
             CountdownVisibility = Visibility.Collapsed;
+            EntriesPanelVisibility = Visibility.Collapsed;
         }
 
         private void ShowLeaderboard()
