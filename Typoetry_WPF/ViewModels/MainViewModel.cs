@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Typoetry.Models;
 using Typoetry.Persistence;
 using Typoetry_WPF.ViewModels;
+using Typoetry_WPF.Views;
 
 namespace Typoetry_WPF.ViewModels
 {
@@ -33,6 +34,7 @@ namespace Typoetry_WPF.ViewModels
         public ICommand PlayNormalCommand { get; }
         public ICommand PlayCasualCommand { get; }
         public ICommand ChooseTextCommand { get; }
+        public ICommand AddTextCommand { get; }
 
         public string NormalButtonText
         {
@@ -157,6 +159,7 @@ namespace Typoetry_WPF.ViewModels
             PlayNormalCommand = new DelegateCommand(ExecutePlayNormal);
             PlayCasualCommand = new DelegateCommand(ExecutePlayCasual);
             ChooseTextCommand = new DelegateCommand(ExecuteChooseText);
+            AddTextCommand = new DelegateCommand(ExecuteAddText);
 
             _session.TimerTick += Session_TimerTick;
 
@@ -165,6 +168,15 @@ namespace Typoetry_WPF.ViewModels
             _typingTextBox.PreviewTextInput += KeyPressed;
 
             ShowLeaderboard();
+        }
+
+        private void ExecuteAddText(object? parameter)
+        {
+            var addWindow = new AddEntryView();
+            var addViewModel = new AddEntryViewModel(_dataHandler, addWindow);
+            addWindow.DataContext = addViewModel;
+            addWindow.Owner = Application.Current.MainWindow;
+            addWindow.ShowDialog();
         }
 
         private void ExecuteChooseText(object? parameter)

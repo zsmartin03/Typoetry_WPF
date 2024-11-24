@@ -1,80 +1,90 @@
-﻿<Window x:Class="Typoetry_WPF.MainWindow"
+﻿<!-- MainWindow.xaml -->
+<Window x:Class="Typoetry_WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:views="clr-namespace:Typoetry_WPF.Views"
-        Title="Typoetry" Height="600" Width="800"
-        Background="#3B4252">
+        Title="Typoetry" 
+        Height="700" 
+        Width="1000"
+        MinHeight="500"
+        MinWidth="400"
+        Background="{StaticResource BackgroundBrush}"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Menu Buttons -->
-        <StackPanel Grid.Row="0" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center" 
-                    Margin="10">
-            <Button Command="{Binding PlayNormalCommand}" 
-                    Content="{Binding NormalButtonText}"
-                    Style="{StaticResource RoundedButton}" 
-                    Margin="5"/>
-            <Button Command="{Binding PlayCasualCommand}" 
-                    Content="CASUAL"
-                    Style="{StaticResource RoundedButton}" 
-                    Margin="5"
-                    Visibility="{Binding MenuButtonsVisibility}"/>
-            <Button Command="{Binding ChooseTextCommand}" 
-                    Content="CHOOSE TEXT"
-                    Style="{StaticResource RoundedButton}" 
-                    Margin="5"
-                    Visibility="{Binding MenuButtonsVisibility}"/>
-        </StackPanel>
+        <!-- Top Bar with Menu Buttons -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource SecondaryBackgroundBrush}"
+                CornerRadius="0,0,12,12"
+                Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        Margin="20,12">
+                <Button Command="{Binding PlayNormalCommand}" 
+                        Content="{Binding NormalButtonText}"
+                        Style="{StaticResource ModernButton}"/>
+                <Button Command="{Binding PlayCasualCommand}" 
+                        Content="CASUAL"
+                        Style="{StaticResource ModernButton}"
+                        Visibility="{Binding MenuButtonsVisibility}"/>
+                <Button Command="{Binding ChooseTextCommand}" 
+                        Content="CHOOSE TEXT"
+                        Style="{StaticResource ModernButton}"
+                        Visibility="{Binding MenuButtonsVisibility}"/>
+                <Button Command="{Binding AddTextCommand}" 
+                        Content="ADD TEXT"
+                        Style="{StaticResource ModernButton}"
+                        Visibility="{Binding MenuButtonsVisibility}"/>
+            </StackPanel>
+        </Border>
 
         <!-- Main Content Area -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="20">
             <!-- Typing Area -->
-            <Border Background="#2F3542" 
-                    CornerRadius="20" 
-                    Margin="10"
+            <Border Background="{StaticResource SecondaryBackgroundBrush}" 
+                    CornerRadius="12" 
+                    Effect="{StaticResource ShadowEffect}"
                     Visibility="{Binding TypingAreaVisibility}">
-                <Grid>
+                <Grid Margin="16">
                     <RichTextBox x:Name="TypingTextBox"
-                                Background="Transparent"
-                                Foreground="#ECEFF4"
-                                BorderThickness="0"
-                                IsReadOnly="True"
-                                Visibility="{Binding TypingTextVisibility}"
-                                Margin="10">
+                                Style="{StaticResource ModernRichTextBox}"
+                                Visibility="{Binding TypingTextVisibility}">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0"/>
+                                <Setter Property="LineHeight" Value="24"/>
                             </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
+
                     <TextBlock Text="{Binding CountdownText}"
-                              FontSize="32"
+                              FontSize="48"
                               FontWeight="Bold"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"
-                              Foreground="White"
+                              Foreground="{StaticResource TextBrush}"
                               Visibility="{Binding CountdownVisibility}"/>
+
                     <TextBlock Text="{Binding SessionOverview}"
+                              Style="{StaticResource ModernTextBlock}"
                               HorizontalAlignment="Right"
                               VerticalAlignment="Top"
-                              Margin="10"
-                              Foreground="White"
                               Visibility="{Binding OverviewVisibility}"/>
+
                     <TextBlock Text="{Binding LeaderboardText}"
-                              Foreground="White"
-                              Margin="10"
+                              Style="{StaticResource ModernTextBlock}"
                               TextWrapping="Wrap"
                               Visibility="{Binding LeaderboardVisibility}"/>
                 </Grid>
             </Border>
 
             <!-- Entries Panel -->
-            <ScrollViewer Visibility="{Binding EntriesPanelVisibility}"
+            <ScrollViewer Style="{StaticResource ModernScrollViewer}"
+                         Visibility="{Binding EntriesPanelVisibility}"
                          VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding EntriesPanelViewModel.Entries}">
                     <ItemsControl.ItemsPanel>
@@ -84,7 +94,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <views:EntryView Margin="10"/>
+                            <views:EntryView Margin="8"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
