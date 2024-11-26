@@ -51,8 +51,10 @@
                     Visibility="{Binding TypingAreaVisibility}">
                 <Grid Margin="16">
                     <RichTextBox x:Name="TypingTextBox"
-                                Style="{StaticResource ModernRichTextBox}"
-                                Visibility="{Binding TypingTextVisibility}">
+             Style="{StaticResource ModernRichTextBox}"
+             Visibility="{Binding TypingTextVisibility}"
+             IsReadOnly="True"
+             CaretBrush="Transparent">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0"/>
@@ -72,13 +74,17 @@
                     <TextBlock Text="{Binding SessionOverview}"
                               Style="{StaticResource ModernTextBlock}"
                               HorizontalAlignment="Right"
-                              VerticalAlignment="Top"
+                              VerticalAlignment="Bottom"
                               Visibility="{Binding OverviewVisibility}"/>
-
                     <TextBlock Text="{Binding LeaderboardText}"
-                              Style="{StaticResource ModernTextBlock}"
-                              TextWrapping="Wrap"
-                              Visibility="{Binding LeaderboardVisibility}"/>
+                                Style="{StaticResource ModernTextBlock}"                               
+                              HorizontalAlignment="Center"
+           TextWrapping="Wrap"
+           RenderOptions.ClearTypeHint="Enabled"
+           TextOptions.TextFormattingMode="Display"
+           UseLayoutRounding="True"
+           SnapsToDevicePixels="True"
+           Visibility="{Binding LeaderboardVisibility}"/>
                 </Grid>
             </Border>
 

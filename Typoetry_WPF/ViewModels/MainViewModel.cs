@@ -163,8 +163,7 @@ namespace Typoetry_WPF.ViewModels
 
             _session.TimerTick += Session_TimerTick;
 
-            _typingTextBox.PreviewKeyDown += SuppressSpecialKeys;
-            _typingTextBox.KeyDown += KeyDownHandler;
+            _typingTextBox.PreviewKeyDown += HandleSpecialKeys;
             _typingTextBox.PreviewTextInput += KeyPressed;
 
             ShowLeaderboard();
@@ -281,7 +280,7 @@ namespace Typoetry_WPF.ViewModels
             SessionOverview = _session.SessionOverview;
         }
 
-        private void SuppressSpecialKeys(object sender, KeyEventArgs e)
+        private void HandleSpecialKeys(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down)
             {
@@ -289,15 +288,11 @@ namespace Typoetry_WPF.ViewModels
             }
             else if (e.Key == Key.Space)
             {
-                if (_session.HandleKeyPress(' '))
-                {
-                    ChangeCharacterBackgroundColor(_session.CurrentPosition, new SolidColorBrush(Color.FromRgb(163, 190, 140)));
-                }
-                else
-                {
-                    ChangeCharacterBackgroundColor(_session.CurrentPosition, new SolidColorBrush(Color.FromRgb(191, 97, 106)));
-                }
-                e.Handled = true;
+                HandleKey(' ', e);
+            }
+            else if(e.Key == Key.Enter)
+            {
+                HandleKey('\n', e);
             }
             else if (e.Key == Key.Back)
             {
@@ -307,38 +302,24 @@ namespace Typoetry_WPF.ViewModels
                 }
                 e.Handled = true;
             }
-            if (_session.CurrentPosition >= _session.TextToWrite.Length)
+            else if(e.Key == Key.Delete)
             {
-                FinishTyping();
-            }
-        }
-
-        private void KeyDownHandler(object sender, KeyEventArgs e)
-        {
-            if (_session == null || !_session.IsPlaying) return;
-
-
-            if (e.Key == Key.Enter)
-            {
-                if (_session.HandleEnter())
-                {
-                    ChangeCharacterBackgroundColor(_session.CurrentPosition, new SolidColorBrush(Color.FromRgb(163, 190, 140)));
-                }
                 e.Handled = true;
             }
         }
 
         private void KeyPressed(object sender, TextCompositionEventArgs e)
         {
+
             if (_session == null || !_session.IsPlaying) return;
 
             char pressedKey = e.Text[0];
 
-            if (_session.TextToWrite[_session.CurrentPosition] == '\n')
-            {
-                e.Handled = true;
-                return;
-            }
+            HandleKey(pressedKey);
+        }
+
+        private void HandleKey(char pressedKey, KeyEventArgs e = null)
+        {
 
             if (_session.HandleKeyPress(pressedKey))
             {
@@ -349,13 +330,14 @@ namespace Typoetry_WPF.ViewModels
                 ChangeCharacterBackgroundColor(_session.CurrentPosition, new SolidColorBrush(Color.FromRgb(191, 97, 106)));
             }
 
-            e.Handled = true;
-
             if (_session.CurrentPosition >= _session.TextToWrite.Length)
             {
                 FinishTyping();
             }
+
+            if (e != null) e.Handled = true;
         }
+    
 
         private void ChangeCharacterBackgroundColor(int position, SolidColorBrush color)
         {
