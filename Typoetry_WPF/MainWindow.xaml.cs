@@ -13,13 +13,10 @@ namespace Typoetry_WPF
         {
             InitializeComponent();
 
-            // Initialize ViewModel with the RichTextBox from XAML
             _viewModel = new MainViewModel(TypingTextBox);
 
-            // Set DataContext for binding
             DataContext = _viewModel;
 
-            // Disable copy/paste and drag/drop for the RichTextBox
             TypingTextBox.PreviewKeyDown += (s, e) =>
             {
                 if (e.KeyboardDevice.Modifiers == ModifierKeys.Control)

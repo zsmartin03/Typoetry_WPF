@@ -195,13 +195,6 @@ namespace Typoetry_WPF.ViewModels
             }
         }
 
-        private void PlayChosenText(Entry entry)
-        {
-            _session.SetChosenGame(entry);
-            EntriesPanelVisibility = Visibility.Collapsed;
-            StartTyping();
-        }
-
         private void ExecutePlayNormal(object? parameter)
         {
             LeaderboardVisibility = Visibility.Collapsed;
@@ -233,14 +226,13 @@ namespace Typoetry_WPF.ViewModels
             StartTyping();
         }
 
-        private void StartTyping()
+        private void PlayChosenText(Entry entry)
         {
-            ChangeMenuVisibility(false);
-            CountdownText = "3";
-            CountdownVisibility = Visibility.Visible;
-            _typingTextBox.IsEnabled = false;
-            _countdownTimer.Start();
+            _session.SetChosenGame(entry);
+            EntriesPanelVisibility = Visibility.Collapsed;
+            StartTyping();
         }
+
 
         private void CountdownTimer_Tick(object? sender, EventArgs e)
         {
@@ -273,6 +265,15 @@ namespace Typoetry_WPF.ViewModels
 
             _typingTextBox.IsEnabled = true;
             _typingTextBox.Focus();
+        }
+
+        private void StartTyping()
+        {
+            ChangeMenuVisibility(false);
+            CountdownText = "3";
+            CountdownVisibility = Visibility.Visible;
+            _typingTextBox.IsEnabled = false;
+            _countdownTimer.Start();
         }
 
         private void Session_TimerTick(object? sender, EventArgs e)
@@ -380,19 +381,6 @@ namespace Typoetry_WPF.ViewModels
             return null;
         }
 
-        private void FinishTyping()
-        {
-            _session.EndSession();
-            MessageBox.Show(_session.FinalOverview, "Overview", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            OverviewVisibility = Visibility.Collapsed;
-            ChangeMenuVisibility(true);
-            TypingTextVisibility = Visibility.Collapsed;
-            NormalButtonText = "NORMAL";
-
-            ShowLeaderboard();
-        }
-
         private void ChangeMenuVisibility(bool visible)
         {
             MenuButtonsVisibility = visible ? Visibility.Visible : Visibility.Collapsed;
@@ -419,6 +407,20 @@ namespace Typoetry_WPF.ViewModels
             }
 
             LeaderboardText = leaderboardBuilder.ToString();
+        }
+
+
+        private void FinishTyping()
+        {
+            _session.EndSession();
+            MessageBox.Show(_session.FinalOverview, "Overview", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            OverviewVisibility = Visibility.Collapsed;
+            ChangeMenuVisibility(true);
+            TypingTextVisibility = Visibility.Collapsed;
+            NormalButtonText = "NORMAL";
+
+            ShowLeaderboard();
         }
     }
 }

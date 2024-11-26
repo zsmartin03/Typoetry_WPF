@@ -16,10 +16,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top Bar with Menu Buttons -->
         <Border Grid.Row="0" 
                 Background="{StaticResource SecondaryBackgroundBrush}"
-                CornerRadius="0,0,12,12"
                 Effect="{StaticResource ShadowEffect}">
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center" 
