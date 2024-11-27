@@ -16,17 +16,6 @@ namespace Typoetry_WPF
             _viewModel = new MainViewModel(TypingTextBox);
 
             DataContext = _viewModel;
-
-            TypingTextBox.PreviewKeyDown += (s, e) =>
-            {
-                if (e.KeyboardDevice.Modifiers == ModifierKeys.Control)
-                {
-                    e.Handled = true;
-                }
-            };
-
-            TypingTextBox.PreviewDragOver += (s, e) => e.Handled = true;
-            TypingTextBox.PreviewDrop += (s, e) => e.Handled = true;
         }
     }
 }

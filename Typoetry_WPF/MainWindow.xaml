@@ -8,6 +8,7 @@
         Width="1000"
         MinHeight="500"
         MinWidth="400"
+        TextOptions.TextFormattingMode="Display"
         Background="{StaticResource BackgroundBrush}"
         WindowStartupLocation="CenterScreen">
     <Grid>

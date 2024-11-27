@@ -23,7 +23,7 @@ namespace Typoetry_WPF.ViewModels
         private string _countdownText = "";
         private string _sessionOverview = "";
         private string _leaderboardText = "";
-        private EntriesPanelViewModel _entriesPanelViewModel;
+        private EntriesPanelViewModel _entriesPanelViewModel = null!;
         private Visibility _entriesPanelVisibility = Visibility.Collapsed;
         private Visibility _menuButtonsVisibility = Visibility.Visible;
         private Visibility _typingTextVisibility = Visibility.Collapsed;
@@ -319,7 +319,7 @@ namespace Typoetry_WPF.ViewModels
             HandleKey(pressedKey);
         }
 
-        private void HandleKey(char pressedKey, KeyEventArgs e = null)
+        private void HandleKey(char pressedKey, KeyEventArgs? e = null)
         {
 
             if (_session.HandleKeyPress(pressedKey))
@@ -347,8 +347,8 @@ namespace Typoetry_WPF.ViewModels
 
             if (position < 0 || position >= documentText.Length) return;
 
-            TextPointer start = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position - 1);
-            TextPointer end = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position);
+            TextPointer? start = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position - 1);
+            TextPointer? end = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position);
 
             if (start != null && end != null)
             {
@@ -357,7 +357,7 @@ namespace Typoetry_WPF.ViewModels
             }
         }
 
-        private TextPointer GetTextPointerAtCharacterOffset(TextPointer start, int characterOffset)
+        private TextPointer? GetTextPointerAtCharacterOffset(TextPointer start, int characterOffset)
         {
             int currentOffset = 0;
 
