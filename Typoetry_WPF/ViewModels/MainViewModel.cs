@@ -12,13 +12,14 @@ using Typoetry_WPF.Views;
 
 namespace Typoetry_WPF.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
         private readonly DataHandler _dataHandler;
         private readonly TypingSession _session;
         private readonly DispatcherTimer _countdownTimer;
         private readonly RichTextBox _typingTextBox;
 
+        private bool _disposed = false;
         private string _normalButtonText = "NORMAL";
         private string _countdownText = "";
         private string _sessionOverview = "";
@@ -167,6 +168,32 @@ namespace Typoetry_WPF.ViewModels
             _typingTextBox.PreviewTextInput += KeyPressed;
 
             ShowLeaderboard();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                _countdownTimer.Stop();
+                _countdownTimer.Tick -= CountdownTimer_Tick;
+                _countdownTimer?.Stop();
+                _countdownTimer?.Dispatcher?.InvokeShutdown();
+
+                _session?.Dispose();
+                _typingTextBox.PreviewKeyDown -= HandleSpecialKeys;
+                _typingTextBox.PreviewTextInput -= KeyPressed;
+            }
+
+
+            _disposed = true;
         }
 
         private void ExecuteAddText(object? parameter)
@@ -331,14 +358,67 @@ namespace Typoetry_WPF.ViewModels
                 ChangeCharacterBackgroundColor(_session.CurrentPosition, new SolidColorBrush(Color.FromRgb(191, 97, 106)));
             }
 
+            SetCaretPosition(_session.CurrentPosition);
+
             if (_session.CurrentPosition >= _session.TextToWrite.Length)
             {
                 FinishTyping();
             }
 
+            BringCurrentTextIntoView();
+
             if (e != null) e.Handled = true;
         }
-    
+
+        private void SetCaretPosition(int position)
+        {
+            var textRange = new TextRange(_typingTextBox.Document.ContentStart, _typingTextBox.Document.ContentEnd);
+            string documentText = textRange.Text;
+
+            if (position < 0 || position > documentText.Length) return;
+
+            TextPointer? targetPointer = GetTextPointerAtCharacterOffset(_typingTextBox.Document.ContentStart, position);
+            if (targetPointer != null)
+            {
+                _typingTextBox.CaretPosition = targetPointer;
+                _typingTextBox.ScrollToVerticalOffset(targetPointer.GetCharacterRect(LogicalDirection.Forward).Top);
+            }
+        }
+
+        private void BringCurrentTextIntoView()
+        {
+            var caretPosition = _typingTextBox.CaretPosition;
+
+            caretPosition.Paragraph?.BringIntoView();
+
+            var textPointer = _typingTextBox.CaretPosition;
+            var rect = textPointer.GetCharacterRect(LogicalDirection.Forward);
+            var scrollViewer = GetScrollViewer(_typingTextBox);
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + rect.Top - scrollViewer.ViewportHeight / 2);
+            }
+        }
+
+        private static ScrollViewer? GetScrollViewer(DependencyObject element)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+                if (child is ScrollViewer viewer)
+                {
+                    return viewer;
+                }
+
+                var result = GetScrollViewer(child);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
 
         private void ChangeCharacterBackgroundColor(int position, SolidColorBrush color)
         {
@@ -422,5 +502,6 @@ namespace Typoetry_WPF.ViewModels
 
             ShowLeaderboard();
         }
+
     }
 }

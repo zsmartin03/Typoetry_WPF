@@ -5,7 +5,7 @@ using Typoetry_WPF.ViewModels;
 
 namespace Typoetry_WPF
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         private readonly MainViewModel _viewModel;
 
@@ -16,6 +16,18 @@ namespace Typoetry_WPF
             _viewModel = new MainViewModel(TypingTextBox);
 
             DataContext = _viewModel;
+        }
+
+        public void Dispose()
+        {
+            _viewModel.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            _viewModel.Dispose();
         }
     }
 }
